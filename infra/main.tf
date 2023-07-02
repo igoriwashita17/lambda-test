@@ -1,7 +1,7 @@
 module "lambda_function" {
   source = "terraform-aws-modules/lambda/aws"
 
-  function_name = "yey-lambda1"
+  function_name = var.function_name
   description   = "My awesome lambda function"
   handler       = "index.handler"
   runtime       = "nodejs18.x"
@@ -18,6 +18,6 @@ resource "aws_lambda_permission" "allow-api-gateway" {
   statement_id  = "AllowExecutionFromApiGateway"
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:us-east-1:575360115351:hlhhb8stel/*/*"
+  source_arn    = "${var.apigw_execution_arn}/*/*"
   depends_on    = [module.lambda_function]
 }
